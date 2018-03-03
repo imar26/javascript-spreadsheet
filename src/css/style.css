@@ -45,16 +45,17 @@ footer p {
 table {
     border-collapse: collapse;
     border: 1px solid;
+    width: 100%;
 }
 
 td, th {
     border: 1px solid;
-    width: 10%;
 }
 
 td:first-child {
     font-weight: bold;
     text-align: center;
+    padding: 0 5px;
 }
 
 input[type="text"] {
@@ -106,4 +107,5 @@ input[type="submit"] {
 
 .highlight input {
     background-color: #FC335C;
+    color: #fff;
 }

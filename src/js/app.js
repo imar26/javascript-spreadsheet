@@ -63,8 +63,6 @@ function loadTable() {
 
                 td.addEventListener('change', function() {
                     if(event.isTrusted) {
-                        // console.log(td.id);
-                        // console.log(td.querySelector('input').value);
                         if(td.querySelector('input').value.startsWith("=sum")) {
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
@@ -108,7 +106,7 @@ function loadTable() {
 addRow.addEventListener('click', insertRow);
 addCol.addEventListener('click', insertColumn);
 delRow.addEventListener('click', removeRow);
-// delCol.addEventListener('click', removeCol);
+delCol.addEventListener('click', removeCol);
 
 calSum.addEventListener('click', calculateSum);
 calDiff.addEventListener('click', calculateDifference);
@@ -139,7 +137,56 @@ function myMouseUpHandler() {
 
 function findSum(id, x, y) {
     if(x && y) {      
-        document.getElementById(id).querySelector('input').value = parseInt(document.getElementById(x).querySelector('input').value) + parseInt(document.getElementById(y).querySelector('input').value);
+        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var firstNumber;
+        var lastNumber;
+        var fnumber = document.getElementById(x).parentNode.id.split("_");
+        var lnumber = document.getElementById(y).parentNode.id.split("_");
+        var firstLetter = document.getElementById(x).id.split("");
+        var lastLetter = document.getElementById(y).id.split("");
+        let tablearea = document.getElementById('tableId');
+        var rowNumber1, rowNumber2;
+        if(firstLetter[2]) {
+            rowNumber1 = firstLetter[1]+firstLetter[2];
+        } else {
+            rowNumber1 = firstLetter[1];
+        }
+        if(lastLetter[2]) {
+            rowNumber2 = lastLetter[1]+lastLetter[2];
+        } else {
+            rowNumber2 = lastLetter[1];
+        }        
+        if(fnumber[1] == lnumber[1]) {            
+            let cellsarea = tablearea.rows[fnumber[1]].cells;
+            for(var i=0; i<str.length; i++) {
+                if(str[i] == firstLetter[0]) {
+                    firstNumber = i + 1;                
+                }
+                if(str[i] == lastLetter[0]) {
+                    lastNumber = i + 1;                
+                }
+            }
+
+            var sum = 0;
+            for(var i = firstNumber; i <= lastNumber; i++) {
+                sum += parseFloat(cellsarea[i].querySelector('input').value);
+            }        
+            document.getElementById(id).querySelector('input').value = sum;
+        } else if(firstLetter[0] == lastLetter[0]) {
+            var colNumber;
+            for(var i=0; i<str.length; i++) {
+                if(str[i] == firstLetter[0]) {
+                    colNumber = i + 1;                
+                }
+            }
+            var sum = 0;
+            for(var j=parseInt(rowNumber1); j<=parseInt(rowNumber2); j++) {
+                if(colNumber > 0) {
+                    sum += parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                }
+            }        
+            document.getElementById(id).querySelector('input').value = sum;
+        }
     }
 }
 
@@ -171,6 +218,20 @@ function insertColumn() {
                         }
                     }
                 });
+
+                td.addEventListener('change', function() {
+                    if(event.isTrusted) {
+                        if(td.querySelector('input').value.startsWith("=sum")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findSum(td.id, array[0], array[1]);
+                            }
+                        }
+                    }
+                });
+
                 let x = document.createElement("INPUT");
                 x.setAttribute("type", "text");
                 td.appendChild(x);
@@ -227,6 +288,19 @@ function createCell(cell, count, rowCount) {
             }
         }
     });
+
+    cell.addEventListener('change', function() {
+        if(event.isTrusted) {
+            if(cell.querySelector('input').value.startsWith("=sum")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(cell.querySelector('input').value);
+                var array = matches[1].split(',');
+                if(array.length == 2) {
+                    findSum(cell.id, array[0], array[1]);
+                }
+            }
+        }
+    });
 }
 
 function removeRow() {
@@ -239,14 +313,26 @@ function removeRow() {
         
     }
 }
-
+function removeCol() {
+    if(event.isTrusted) {
+        let table = document.getElementById('tableId');
+        let selectedCells = document.getElementsByClassName("highlight");
+        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var col = selectedCells[0].id;
+        var colInd = col.split("");
+        var ind = str.indexOf(colInd[0]);
+        for(var i = 0; i < table.rows.length; i++){
+            table.rows[i].deleteCell(ind+1);
+        }  
+    }
+}
 function calculateSum() {
     if(event.isTrusted) {
         let selectedCells = document.getElementsByClassName("highlight");
         let length = selectedCells.length;
         let sum = 0;
         for (let i = 0; i < length; i++) {
-            sum += parseInt(selectedCells[i].querySelector('input').value);
+            sum += parseFloat(selectedCells[i].querySelector('input').value);
         }
         document.getElementById("result").innerHTML = "The calculted sum is : " + sum;
     }
@@ -259,9 +345,9 @@ function calculateDifference() {
         var diff;
         var value_1 = 0;
         for (let i = 0; i < length; i++) {
-            value_1 = parseInt(selectedCells[0].querySelector('input').value);
+            value_1 = parseFloat(selectedCells[0].querySelector('input').value);
             if (i > 0) {
-                diff -= parseInt(selectedCells[i].querySelector('input').value);
+                diff -= parseFloat(selectedCells[i].querySelector('input').value);
                 value_1 = diff;
             }
             diff = value_1;
@@ -277,9 +363,9 @@ function calculateMultiplication() {
         var total;
         var value_1 = 0;
         for (let i = 0; i < length; i++) {
-            value_1 = parseInt(selectedCells[0].querySelector('input').value);
+            value_1 = parseFloat(selectedCells[0].querySelector('input').value);
             if (i > 0) {
-                total *= parseInt(selectedCells[i].querySelector('input').value);
+                total *= parseFloat(selectedCells[i].querySelector('input').value);
                 value_1 = total;
             }
             total = value_1;
@@ -295,9 +381,9 @@ function calculateDivision() {
         var total;
         var value_1 = 0;
         for (let i = 0; i < length; i++) {
-            value_1 = parseInt(selectedCells[0].querySelector('input').value);
+            value_1 = parseFloat(selectedCells[0].querySelector('input').value);
             if (i > 0) {
-                total /= parseInt(selectedCells[i].querySelector('input').value);
+                total /= parseFloat(selectedCells[i].querySelector('input').value);
                 value_1 = total;
             }
             total = value_1;
@@ -313,9 +399,9 @@ function calculateModulus() {
         var total;
         var value_1 = 0;
         for (let i = 0; i < length; i++) {
-            value_1 = parseInt(selectedCells[0].querySelector('input').value);
+            value_1 = parseFloat(selectedCells[0].querySelector('input').value);
             if (i > 0) {
-                total %= parseInt(selectedCells[i].querySelector('input').value);
+                total %= parseFloat(selectedCells[i].querySelector('input').value);
                 value_1 = total;
             }
             total = value_1;
