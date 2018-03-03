@@ -70,6 +70,34 @@ function loadTable() {
                             if(array.length == 2) {
                                 findSum(td.id, array[0], array[1]);
                             }
+                        } else if(td.querySelector('input').value.startsWith("=diff")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findDiff(td.id, array[0], array[1]);
+                            }
+                        } else if(td.querySelector('input').value.startsWith("=mul")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findMul(td.id, array[0], array[1]);
+                            }
+                        } else if(td.querySelector('input').value.startsWith("=div")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findDiv(td.id, array[0], array[1]);
+                            }
+                        } else if(td.querySelector('input').value.startsWith("=mod")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findMod(td.id, array[0], array[1]);
+                            }
                         }
                     }
                 });
@@ -190,6 +218,73 @@ function findSum(id, x, y) {
     }
 }
 
+function findDiff(id, x, y) {
+    if(x && y) {      
+        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var firstNumber;
+        var lastNumber;
+        var fnumber = document.getElementById(x).parentNode.id.split("_");
+        var lnumber = document.getElementById(y).parentNode.id.split("_");
+        var firstLetter = document.getElementById(x).id.split("");
+        var lastLetter = document.getElementById(y).id.split("");
+        let tablearea = document.getElementById('tableId');
+        var rowNumber1, rowNumber2;
+        if(firstLetter[2]) {
+            rowNumber1 = firstLetter[1]+firstLetter[2];
+        } else {
+            rowNumber1 = firstLetter[1];
+        }
+        if(lastLetter[2]) {
+            rowNumber2 = lastLetter[1]+lastLetter[2];
+        } else {
+            rowNumber2 = lastLetter[1];
+        }        
+        if(fnumber[1] == lnumber[1]) {            
+            let cellsarea = tablearea.rows[fnumber[1]].cells;
+            for(var i=0; i<str.length; i++) {
+                if(str[i] == firstLetter[0]) {
+                    firstNumber = i + 1;                
+                }
+                if(str[i] == lastLetter[0]) {
+                    lastNumber = i + 1;                
+                }
+            }   
+            var diff;
+            var value_1 = 0;
+            for (var i = firstNumber; i <= lastNumber; i++) {
+                value_1 = parseFloat(cellsarea[firstNumber].querySelector('input').value);
+                if (i > firstNumber) {
+                    diff -= parseFloat(cellsarea[i].querySelector('input').value);
+                    value_1 = diff;
+                }
+                diff = value_1;
+            }
+            document.getElementById(id).querySelector('input').value = diff;
+        } else if(firstLetter[0] == lastLetter[0]) {
+            var colNumber;
+            for(var i=0; i<str.length; i++) {
+                if(str[i] == firstLetter[0]) {
+                    colNumber = i + 1;                
+                }
+            }
+
+            var diff;
+            var value_1 = 0;
+            for (var j=parseInt(rowNumber1); j<=parseInt(rowNumber2); j++) {
+                if(colNumber > 0) {
+                    value_1 = parseFloat(tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value);
+                    if (j > parseInt(rowNumber1)) {
+                        diff -= parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                        value_1 = diff;
+                    }
+                    diff = value_1;
+                }
+            }
+            document.getElementById(id).querySelector('input').value = diff;
+        }
+    }
+}
+
 function insertColumn() {
     if(event.isTrusted) {
         let tablearea = document.getElementById('table');
@@ -227,6 +322,34 @@ function insertColumn() {
                             var array = matches[1].split(',');
                             if(array.length == 2) {
                                 findSum(td.id, array[0], array[1]);
+                            }
+                        } else if(td.querySelector('input').value.startsWith("=diff")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findDiff(td.id, array[0], array[1]);
+                            }
+                        } else if(td.querySelector('input').value.startsWith("=mul")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findMul(td.id, array[0], array[1]);
+                            }
+                        } else if(td.querySelector('input').value.startsWith("=div")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findDiv(td.id, array[0], array[1]);
+                            }
+                        } else if(td.querySelector('input').value.startsWith("=mod")) {
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(td.querySelector('input').value);
+                            var array = matches[1].split(',');
+                            if(array.length == 2) {
+                                findMod(td.id, array[0], array[1]);
                             }
                         }
                     }
@@ -297,6 +420,34 @@ function createCell(cell, count, rowCount) {
                 var array = matches[1].split(',');
                 if(array.length == 2) {
                     findSum(cell.id, array[0], array[1]);
+                }
+            } else if(td.querySelector('input').value.startsWith("=diff")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(td.querySelector('input').value);
+                var array = matches[1].split(',');
+                if(array.length == 2) {
+                    findDiff(td.id, array[0], array[1]);
+                }
+            } else if(td.querySelector('input').value.startsWith("=mul")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(td.querySelector('input').value);
+                var array = matches[1].split(',');
+                if(array.length == 2) {
+                    findMul(td.id, array[0], array[1]);
+                }
+            } else if(td.querySelector('input').value.startsWith("=div")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(td.querySelector('input').value);
+                var array = matches[1].split(',');
+                if(array.length == 2) {
+                    findDiv(td.id, array[0], array[1]);
+                }
+            } else if(td.querySelector('input').value.startsWith("=mod")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(td.querySelector('input').value);
+                var array = matches[1].split(',');
+                if(array.length == 2) {
+                    findMod(td.id, array[0], array[1]);
                 }
             }
         }
