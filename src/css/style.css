@@ -109,3 +109,8 @@ input[type="submit"] {
     background-color: #FC335C;
     color: #fff;
 }
+
+.formula input {
+    background-color: #000;
+    color: #fff;
+}

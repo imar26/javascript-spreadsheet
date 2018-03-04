@@ -13,7 +13,9 @@ import {
     exportToCSV
 } from './dom-loader.js';
 var isMouseDown, isHighlighted;
-var defrows = 8, defcolumns = 5;
+var defrows = 8,
+    defcolumns = 5;
+
 function init() {
 
     loadTable();
@@ -38,14 +40,14 @@ function loadTable() {
     for (let i = 0; i <= defrows; i++) {
         let tr = document.createElement('tr');
         tr.setAttribute("id", "tr_" + i);
-        if(i > 0) {
+        if (i > 0) {
             for (let j = 0; j <= defcolumns; j++) {
                 let td = document.createElement('td');
                 // td.setAttribute("onmousedown", "mouseDown(this, event)");
                 // td.setAttribute("onmouseover", "mouseOver(this)");
-                
-                td.addEventListener('mousedown', function() {
-                    if(event.isTrusted) {
+
+                td.addEventListener('mousedown', function () {
+                    if (event.isTrusted) {
                         isMouseDown = true;
                         td.classList.toggle("highlight");
                         isHighlighted = td.classList.contains("highlight");
@@ -53,76 +55,155 @@ function loadTable() {
                     }
                 });
 
-                td.addEventListener('mouseover', function() {
-                    if(event.isTrusted) {
+                td.addEventListener('mouseover', function () {
+                    if (event.isTrusted) {
                         if (isMouseDown) {
                             td.classList.toggle("highlight", isHighlighted);
                         }
                     }
                 });
 
-                td.addEventListener('change', function() {
-                    if(event.isTrusted) {
-                        if(td.querySelector('input').value.startsWith("=sum")) {
+                td.addEventListener('change', function () {
+                    if (event.isTrusted) {
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=sum")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findSum(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findSum(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=diff")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=diff")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findDiff(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findDiff(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=mul")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=mul")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findMul(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findMul(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=div")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=div")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findDiv(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findDiv(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=mod")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=mod")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findMod(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findMod(td.id, array[0], array[1]);
+                                }
+                            }
+                        }
+                        var formulacells = document.getElementsByClassName("formula");
+                        for (let i = 0; i < formulacells.length; i++) {
+                            var dataId = formulacells[i].id;
+                            var dataFormula = formulacells[i].dataset.formula;
+                            if (dataFormula.toLowerCase().startsWith("=sum")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findSum(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=diff")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findDiff(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=mul")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findMul(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=div")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findDiv(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=mod")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findMod(dataId, array[0], array[1]);
+                                    }
+                                }
                             }
                         }
                     }
                 });
 
-                if(j > 0) {
+                if (j > 0) {
                     let x = document.createElement("INPUT");
                     x.setAttribute("type", "text");
                     td.appendChild(x);
-                    td.setAttribute("id", str.charAt(j-1) + i);
+                    td.setAttribute("id", str.charAt(j - 1) + i);
                 } else {
                     let x = document.createTextNode(i);
                     td.appendChild(x);
                 }
                 tr.appendChild(td);
             }
-        } else {            
+        } else {
             for (let j = 0; j <= defcolumns; j++) {
                 let th = document.createElement('th');
-                if(j > 0) {
-                    let x = document.createTextNode(str.charAt(j-1));
+                if (j > 0) {
+                    let x = document.createTextNode(str.charAt(j - 1));
                     th.appendChild(x);
                 } else {
                     let x = document.createTextNode("");
                     th.appendChild(x);
-                }                
+                }
                 tr.appendChild(th);
             }
         }
@@ -164,91 +245,84 @@ function myMouseUpHandler() {
 }
 
 function findSum(id, x, y) {
-    if(x && y) {      
+    if (x && y) {
         var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         var firstNumber;
         var lastNumber;
         var fnumber = document.getElementById(x).parentNode.id.split("_");
         var lnumber = document.getElementById(y).parentNode.id.split("_");
-        var firstLetter = document.getElementById(x).id.split("");
-        var lastLetter = document.getElementById(y).id.split("");
+        var firstLetter = document.getElementById(x).id;
+        var lastLetter = document.getElementById(y).id;
         let tablearea = document.getElementById('tableId');
         var rowNumber1, rowNumber2;
-        if(firstLetter[2]) {
-            rowNumber1 = firstLetter[1]+firstLetter[2];
-        } else {
-            rowNumber1 = firstLetter[1];
-        }
-        if(lastLetter[2]) {
-            rowNumber2 = lastLetter[1]+lastLetter[2];
-        } else {
-            rowNumber2 = lastLetter[1];
-        }        
-        if(fnumber[1] == lnumber[1]) {            
+        let regex = /[+-]?\d+(?:\.\d+)?/g;
+        let match1 = regex.exec(firstLetter);
+        rowNumber1 = match1[0];
+        regex.lastIndex = 0;
+        let match2 = regex.exec(lastLetter);
+        rowNumber2 = match2[0];
+       
+        if (fnumber[1] == lnumber[1]) {
             let cellsarea = tablearea.rows[fnumber[1]].cells;
-            for(var i=0; i<str.length; i++) {
-                if(str[i] == firstLetter[0]) {
-                    firstNumber = i + 1;                
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    firstNumber = i + 1;
                 }
-                if(str[i] == lastLetter[0]) {
-                    lastNumber = i + 1;                
+                if (str[i] == lastLetter[0]) {
+                    lastNumber = i + 1;
                 }
             }
 
             var sum = 0;
-            for(var i = firstNumber; i <= lastNumber; i++) {
+            for (var i = firstNumber; i <= lastNumber; i++) {
                 sum += parseFloat(cellsarea[i].querySelector('input').value);
-            }        
+            }
             document.getElementById(id).querySelector('input').value = sum;
-        } else if(firstLetter[0] == lastLetter[0]) {
+        } else if (firstLetter[0] == lastLetter[0]) {
             var colNumber;
-            for(var i=0; i<str.length; i++) {
-                if(str[i] == firstLetter[0]) {
-                    colNumber = i + 1;                
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    colNumber = i + 1;
                 }
             }
             var sum = 0;
-            for(var j=parseInt(rowNumber1); j<=parseInt(rowNumber2); j++) {
-                if(colNumber > 0) {
+            for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
+                if (colNumber > 0) {
                     sum += parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
                 }
-            }        
+            }
             document.getElementById(id).querySelector('input').value = sum;
         }
     }
 }
 
 function findDiff(id, x, y) {
-    if(x && y) {      
+    if (x && y) {
         var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         var firstNumber;
         var lastNumber;
         var fnumber = document.getElementById(x).parentNode.id.split("_");
         var lnumber = document.getElementById(y).parentNode.id.split("_");
-        var firstLetter = document.getElementById(x).id.split("");
-        var lastLetter = document.getElementById(y).id.split("");
+        var firstLetter = document.getElementById(x).id;
+        var lastLetter = document.getElementById(y).id;
         let tablearea = document.getElementById('tableId');
         var rowNumber1, rowNumber2;
-        if(firstLetter[2]) {
-            rowNumber1 = firstLetter[1]+firstLetter[2];
-        } else {
-            rowNumber1 = firstLetter[1];
-        }
-        if(lastLetter[2]) {
-            rowNumber2 = lastLetter[1]+lastLetter[2];
-        } else {
-            rowNumber2 = lastLetter[1];
-        }        
-        if(fnumber[1] == lnumber[1]) {            
+        let regex = /[+-]?\d+(?:\.\d+)?/g;
+        let match1 = regex.exec(firstLetter);
+        rowNumber1 = match1[0];
+        regex.lastIndex = 0;
+        let match2 = regex.exec(lastLetter);
+        rowNumber2 = match2[0];
+        if (fnumber[1] == lnumber[1]) {
             let cellsarea = tablearea.rows[fnumber[1]].cells;
-            for(var i=0; i<str.length; i++) {
-                if(str[i] == firstLetter[0]) {
-                    firstNumber = i + 1;                
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    firstNumber = i + 1;
                 }
-                if(str[i] == lastLetter[0]) {
-                    lastNumber = i + 1;                
+                if (str[i] == lastLetter[0]) {
+                    lastNumber = i + 1;
                 }
-            }   
+            }
             var diff;
             var value_1 = 0;
             for (var i = firstNumber; i <= lastNumber; i++) {
@@ -260,18 +334,18 @@ function findDiff(id, x, y) {
                 diff = value_1;
             }
             document.getElementById(id).querySelector('input').value = diff;
-        } else if(firstLetter[0] == lastLetter[0]) {
+        } else if (firstLetter[0] == lastLetter[0]) {
             var colNumber;
-            for(var i=0; i<str.length; i++) {
-                if(str[i] == firstLetter[0]) {
-                    colNumber = i + 1;                
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    colNumber = i + 1;
                 }
             }
 
             var diff;
             var value_1 = 0;
-            for (var j=parseInt(rowNumber1); j<=parseInt(rowNumber2); j++) {
-                if(colNumber > 0) {
+            for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
+                if (colNumber > 0) {
                     value_1 = parseFloat(tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value);
                     if (j > parseInt(rowNumber1)) {
                         diff -= parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
@@ -285,20 +359,209 @@ function findDiff(id, x, y) {
     }
 }
 
+function findMul(id, x, y) {
+    if (x && y) {
+        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var firstNumber;
+        var lastNumber;
+        var fnumber = document.getElementById(x).parentNode.id.split("_");
+        var lnumber = document.getElementById(y).parentNode.id.split("_");
+        var firstLetter = document.getElementById(x).id;
+        var lastLetter = document.getElementById(y).id;
+        let tablearea = document.getElementById('tableId');
+        var rowNumber1, rowNumber2;
+        let regex = /[+-]?\d+(?:\.\d+)?/g;
+        let match1 = regex.exec(firstLetter);
+        rowNumber1 = match1[0];
+        regex.lastIndex = 0;
+        let match2 = regex.exec(lastLetter);
+        rowNumber2 = match2[0];
+        if (fnumber[1] == lnumber[1]) {
+            let cellsarea = tablearea.rows[fnumber[1]].cells;
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    firstNumber = i + 1;
+                }
+                if (str[i] == lastLetter[0]) {
+                    lastNumber = i + 1;
+                }
+            }
+            var total;
+            var value_1 = 0;
+            for (var i = firstNumber; i <= lastNumber; i++) {
+                value_1 = parseFloat(cellsarea[firstNumber].querySelector('input').value);
+                if (i > firstNumber) {
+                    total *= parseFloat(cellsarea[i].querySelector('input').value);
+                    value_1 = total;
+                }
+                total = value_1;
+            }
+            document.getElementById(id).querySelector('input').value = total;
+        } else if (firstLetter[0] == lastLetter[0]) {
+            var colNumber;
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    colNumber = i + 1;
+                }
+            }
+
+            var total;
+            var value_1 = 0;
+            for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
+                if (colNumber > 0) {
+                    value_1 = parseFloat(tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value);
+                    if (j > parseInt(rowNumber1)) {
+                        total *= parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                        value_1 = total;
+                    }
+                    total = value_1;
+                }
+            }
+            document.getElementById(id).querySelector('input').value = total;
+        }
+    }
+}
+
+function findDiv(id, x, y) {
+    if (x && y) {
+        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var firstNumber;
+        var lastNumber;
+        var fnumber = document.getElementById(x).parentNode.id.split("_");
+        var lnumber = document.getElementById(y).parentNode.id.split("_");
+        var firstLetter = document.getElementById(x).id;
+        var lastLetter = document.getElementById(y).id;
+        let tablearea = document.getElementById('tableId');
+        var rowNumber1, rowNumber2;
+        let regex = /[+-]?\d+(?:\.\d+)?/g;
+        let match1 = regex.exec(firstLetter);
+        rowNumber1 = match1[0];
+        regex.lastIndex = 0;
+        let match2 = regex.exec(lastLetter);
+        rowNumber2 = match2[0];
+        if (fnumber[1] == lnumber[1]) {
+            let cellsarea = tablearea.rows[fnumber[1]].cells;
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    firstNumber = i + 1;
+                }
+                if (str[i] == lastLetter[0]) {
+                    lastNumber = i + 1;
+                }
+            }
+            var total;
+            var value_1 = 0;
+            for (var i = firstNumber; i <= lastNumber; i++) {
+                value_1 = parseFloat(cellsarea[firstNumber].querySelector('input').value);
+                if (i > firstNumber) {
+                    total /= parseFloat(cellsarea[i].querySelector('input').value);
+                    value_1 = total;
+                }
+                total = value_1;
+            }
+            document.getElementById(id).querySelector('input').value = total;
+        } else if (firstLetter[0] == lastLetter[0]) {
+            var colNumber;
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    colNumber = i + 1;
+                }
+            }
+
+            var total;
+            var value_1 = 0;
+            for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
+                if (colNumber > 0) {
+                    value_1 = parseFloat(tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value);
+                    if (j > parseInt(rowNumber1)) {
+                        total /= parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                        value_1 = total;
+                    }
+                    total = value_1;
+                }
+            }
+            document.getElementById(id).querySelector('input').value = total;
+        }
+    }
+}
+
+function findMod(id, x, y) {
+    if (x && y) {
+        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var firstNumber;
+        var lastNumber;
+        var fnumber = document.getElementById(x).parentNode.id.split("_");
+        var lnumber = document.getElementById(y).parentNode.id.split("_");
+        var firstLetter = document.getElementById(x).id;
+        var lastLetter = document.getElementById(y).id;
+        let tablearea = document.getElementById('tableId');
+        var rowNumber1, rowNumber2;
+        let regex = /[+-]?\d+(?:\.\d+)?/g;
+        let match1 = regex.exec(firstLetter);
+        rowNumber1 = match1[0];
+        regex.lastIndex = 0;
+        let match2 = regex.exec(lastLetter);
+        rowNumber2 = match2[0];
+        if (fnumber[1] == lnumber[1]) {
+            let cellsarea = tablearea.rows[fnumber[1]].cells;
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    firstNumber = i + 1;
+                }
+                if (str[i] == lastLetter[0]) {
+                    lastNumber = i + 1;
+                }
+            }
+            var total;
+            var value_1 = 0;
+            for (var i = firstNumber; i <= lastNumber; i++) {
+                value_1 = parseFloat(cellsarea[firstNumber].querySelector('input').value);
+                if (i > firstNumber) {
+                    total %= parseFloat(cellsarea[i].querySelector('input').value);
+                    value_1 = total;
+                }
+                total = value_1;
+            }
+            document.getElementById(id).querySelector('input').value = total;
+        } else if (firstLetter[0] == lastLetter[0]) {
+            var colNumber;
+            for (var i = 0; i < str.length; i++) {
+                if (str[i] == firstLetter[0]) {
+                    colNumber = i + 1;
+                }
+            }
+
+            var total;
+            var value_1 = 0;
+            for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
+                if (colNumber > 0) {
+                    value_1 = parseFloat(tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value);
+                    if (j > parseInt(rowNumber1)) {
+                        total %= parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                        value_1 = total;
+                    }
+                    total = value_1;
+                }
+            }
+            document.getElementById(id).querySelector('input').value = total;
+        }
+    }
+}
+
 function insertColumn() {
-    if(event.isTrusted) {
+    if (event.isTrusted) {
         let tablearea = document.getElementById('table');
         let tr = document.getElementsByTagName('tr');
-        let length = tr.length;        
+        let length = tr.length;
         var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for (let i = 0; i < length; i++) {
-            if(i > 0) {
+            if (i > 0) {
                 let td = tr[i].insertCell();
                 // td.setAttribute("onmousedown", "mouseDown(this, event)");
                 // td.setAttribute("onmouseover", "mouseOver(this)");
 
-                td.addEventListener('mousedown', function() {
-                    if(event.isTrusted) {
+                td.addEventListener('mousedown', function () {
+                    if (event.isTrusted) {
                         isMouseDown = true;
                         td.classList.toggle("highlight");
                         isHighlighted = td.classList.contains("highlight");
@@ -306,50 +569,129 @@ function insertColumn() {
                     }
                 });
 
-                td.addEventListener('mouseover', function() {
-                    if(event.isTrusted) {
+                td.addEventListener('mouseover', function () {
+                    if (event.isTrusted) {
                         if (isMouseDown) {
                             td.classList.toggle("highlight", isHighlighted);
                         }
                     }
                 });
 
-                td.addEventListener('change', function() {
-                    if(event.isTrusted) {
-                        if(td.querySelector('input').value.startsWith("=sum")) {
+                td.addEventListener('change', function () {
+                    if (event.isTrusted) {
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=sum")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findSum(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findSum(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=diff")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=diff")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findDiff(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findDiff(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=mul")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=mul")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findMul(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findMul(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=div")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=div")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findDiv(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findDiv(td.id, array[0], array[1]);
+                                }
                             }
-                        } else if(td.querySelector('input').value.startsWith("=mod")) {
+                        }
+                        if (td.querySelector('input').value.toLowerCase().startsWith("=mod")) {
+                            td.dataset.formula = td.querySelector('input').value;
+                            td.classList.add("formula");
                             var regExp = /\(([^)]+)\)/;
                             var matches = regExp.exec(td.querySelector('input').value);
-                            var array = matches[1].split(',');
-                            if(array.length == 2) {
-                                findMod(td.id, array[0], array[1]);
+                            if (matches) {
+                                var array = matches[1].toUpperCase().split(',');
+                                if (array.length == 2) {
+                                    findMod(td.id, array[0], array[1]);
+                                }
+                            }
+                        }
+                        var formulacells = document.getElementsByClassName("formula");
+                        for (let i = 0; i < formulacells.length; i++) {
+                            var dataId = formulacells[i].id;
+                            var dataFormula = formulacells[i].dataset.formula;
+                            if (dataFormula.toLowerCase().startsWith("=sum")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findSum(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=diff")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findDiff(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=mul")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findMul(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=div")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findDiv(dataId, array[0], array[1]);
+                                    }
+                                }
+                            }
+                            if (dataFormula.toLowerCase().startsWith("=mod")) {
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(dataFormula);
+                                if (matches) {
+                                    var array = matches[1].toUpperCase().split(',');
+                                    if (array.length == 2) {
+                                        findMod(dataId, array[0], array[1]);
+                                    }
+                                }
                             }
                         }
                     }
@@ -358,10 +700,10 @@ function insertColumn() {
                 let x = document.createElement("INPUT");
                 x.setAttribute("type", "text");
                 td.appendChild(x);
-                td.setAttribute("id", str.charAt(tr[0].cells.length-2) + i);
+                td.setAttribute("id", str.charAt(tr[0].cells.length - 2) + i);
             } else {
                 let th = document.createElement("th");
-                let x = document.createTextNode(str.charAt(tr[0].cells.length-1));
+                let x = document.createTextNode(str.charAt(tr[0].cells.length - 1));
                 th.appendChild(x);
                 tr[i].appendChild(th);
             }
@@ -370,7 +712,7 @@ function insertColumn() {
 }
 
 function insertRow() {
-    if(event.isTrusted) {
+    if (event.isTrusted) {
         let table = document.getElementById('tableId');
         let rowCount = table.rows.length;
         let row = table.insertRow(rowCount);
@@ -383,11 +725,11 @@ function insertRow() {
 
 function createCell(cell, count, rowCount) {
     var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    if(count > 0) {
+    if (count > 0) {
         let x = document.createElement("INPUT");
         x.setAttribute("type", "text");
         cell.appendChild(x);
-        cell.setAttribute("id", str.charAt(count-1) + rowCount);
+        cell.setAttribute("id", str.charAt(count - 1) + rowCount);
     } else {
         let x = document.createTextNode(rowCount);
         cell.appendChild(x);
@@ -395,8 +737,8 @@ function createCell(cell, count, rowCount) {
     // cell.setAttribute("onmousedown", "mouseDown(this, event)");
     // cell.setAttribute("onmouseover", "mouseOver(this)");
 
-    cell.addEventListener('mousedown', function() {
-        if(event.isTrusted) {
+    cell.addEventListener('mousedown', function () {
+        if (event.isTrusted) {
             isMouseDown = true;
             cell.classList.toggle("highlight");
             isHighlighted = cell.classList.contains("highlight");
@@ -404,50 +746,129 @@ function createCell(cell, count, rowCount) {
         }
     });
 
-    cell.addEventListener('mouseover', function() {
-        if(event.isTrusted) {
+    cell.addEventListener('mouseover', function () {
+        if (event.isTrusted) {
             if (isMouseDown) {
                 cell.classList.toggle("highlight", isHighlighted);
             }
         }
     });
 
-    cell.addEventListener('change', function() {
-        if(event.isTrusted) {
-            if(cell.querySelector('input').value.startsWith("=sum")) {
+    cell.addEventListener('change', function () {
+        if (event.isTrusted) {
+            if (cell.querySelector('input').value.toLowerCase().startsWith("=sum")) {
+                cell.dataset.formula = cell.querySelector('input').value;
+                cell.classList.add("formula");
                 var regExp = /\(([^)]+)\)/;
                 var matches = regExp.exec(cell.querySelector('input').value);
-                var array = matches[1].split(',');
-                if(array.length == 2) {
-                    findSum(cell.id, array[0], array[1]);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findSum(cell.id, array[0], array[1]);
+                    }
                 }
-            } else if(td.querySelector('input').value.startsWith("=diff")) {
+            }
+            if (cell.querySelector('input').value.toLowerCase().startsWith("=diff")) {
+                cell.dataset.formula = cell.querySelector('input').value;
+                cell.classList.add("formula");
                 var regExp = /\(([^)]+)\)/;
-                var matches = regExp.exec(td.querySelector('input').value);
-                var array = matches[1].split(',');
-                if(array.length == 2) {
-                    findDiff(td.id, array[0], array[1]);
+                var matches = regExp.exec(cell.querySelector('input').value);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findDiff(cell.id, array[0], array[1]);
+                    }
                 }
-            } else if(td.querySelector('input').value.startsWith("=mul")) {
+            }
+            if (cell.querySelector('input').value.toLowerCase().startsWith("=mul")) {
+                cell.dataset.formula = cell.querySelector('input').value;
+                cell.classList.add("formula");
                 var regExp = /\(([^)]+)\)/;
-                var matches = regExp.exec(td.querySelector('input').value);
-                var array = matches[1].split(',');
-                if(array.length == 2) {
-                    findMul(td.id, array[0], array[1]);
+                var matches = regExp.exec(cell.querySelector('input').value);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findMul(cell.id, array[0], array[1]);
+                    }
                 }
-            } else if(td.querySelector('input').value.startsWith("=div")) {
+            }
+            if (cell.querySelector('input').value.toLowerCase().startsWith("=div")) {
+                cell.dataset.formula = cell.querySelector('input').value;
+                cell.classList.add("formula");
                 var regExp = /\(([^)]+)\)/;
-                var matches = regExp.exec(td.querySelector('input').value);
-                var array = matches[1].split(',');
-                if(array.length == 2) {
-                    findDiv(td.id, array[0], array[1]);
+                var matches = regExp.exec(cell.querySelector('input').value);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findDiv(cell.id, array[0], array[1]);
+                    }
                 }
-            } else if(td.querySelector('input').value.startsWith("=mod")) {
+            }
+            if (cell.querySelector('input').value.toLowerCase().startsWith("=mod")) {
+                cell.dataset.formula = cell.querySelector('input').value;
+                cell.classList.add("formula");
                 var regExp = /\(([^)]+)\)/;
-                var matches = regExp.exec(td.querySelector('input').value);
-                var array = matches[1].split(',');
-                if(array.length == 2) {
-                    findMod(td.id, array[0], array[1]);
+                var matches = regExp.exec(cell.querySelector('input').value);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findMod(cell.id, array[0], array[1]);
+                    }
+                }
+            }
+            var formulacells = document.getElementsByClassName("formula");
+            for (let i = 0; i < formulacells.length; i++) {
+                var dataId = formulacells[i].id;
+                var dataFormula = formulacells[i].dataset.formula;
+                if (dataFormula.toLowerCase().startsWith("=sum")) {
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(dataFormula);
+                    if (matches) {
+                        var array = matches[1].toUpperCase().split(',');
+                        if (array.length == 2) {
+                            findSum(dataId, array[0], array[1]);
+                        }
+                    }
+                }
+                if (dataFormula.toLowerCase().startsWith("=diff")) {
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(dataFormula);
+                    if (matches) {
+                        var array = matches[1].toUpperCase().split(',');
+                        if (array.length == 2) {
+                            findDiff(dataId, array[0], array[1]);
+                        }
+                    }
+                }
+                if (dataFormula.toLowerCase().startsWith("=mul")) {
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(dataFormula);
+                    if (matches) {
+                        var array = matches[1].toUpperCase().split(',');
+                        if (array.length == 2) {
+                            findMul(dataId, array[0], array[1]);
+                        }
+                    }
+                }
+                if (dataFormula.toLowerCase().startsWith("=div")) {
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(dataFormula);
+                    if (matches) {
+                        var array = matches[1].toUpperCase().split(',');
+                        if (array.length == 2) {
+                            findDiv(dataId, array[0], array[1]);
+                        }
+                    }
+                }
+                if (dataFormula.toLowerCase().startsWith("=mod")) {
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(dataFormula);
+                    if (matches) {
+                        var array = matches[1].toUpperCase().split(',');
+                        if (array.length == 2) {
+                            findMod(dataId, array[0], array[1]);
+                        }
+                    }
                 }
             }
         }
@@ -455,30 +876,74 @@ function createCell(cell, count, rowCount) {
 }
 
 function removeRow() {
-    if(event.isTrusted) {
+    if (event.isTrusted) {
         let table = document.getElementById('tableId');
         let selectedCells = document.getElementsByClassName("highlight");
         var r = selectedCells[0].parentNode.id;
         var s = r.split("_");
         table.deleteRow(s[1]);
-        
+
+        var l = parseInt(s[1]);
+
+        for (let i = l + 1; i <= table.rows.length; i++) {
+            //console.log("Rows length"+ table.rows.length);
+            var rw = document.getElementById("tr_" + i);
+            rw.setAttribute("id", "tr_" + (i - 1));
+            //for(let j = 0; j <= table.rows.length; j++){
+            let cells = rw.getElementsByTagName("td");
+            cells[0].innerText = i - 1;
+            //defrows--;
+            //console.log(cells[1].id);
+
+            for (let j = 1; j < cells.length; j++) {
+                let ind = cells[j].id;
+                console.log(ind);
+                let alpha = ind.split("");
+                let regex = /[+-]?\d+(?:\.\d+)?/g;
+                let match = regex.exec(ind);
+                let new_id = alpha[0] + (match[0] - 1);
+
+
+                cells[j].setAttribute("id", new_id);
+
+            }
+        }
+
     }
 }
+
 function removeCol() {
-    if(event.isTrusted) {
+    if (event.isTrusted) {
         let table = document.getElementById('tableId');
         let selectedCells = document.getElementsByClassName("highlight");
-        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        var col = selectedCells[0].id;
-        var colInd = col.split("");
-        var ind = str.indexOf(colInd[0]);
-        for(var i = 0; i < table.rows.length; i++){
-            table.rows[i].deleteCell(ind+1);
-        }  
+        let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let col = selectedCells[0].id;
+        let colInd = col.split("");
+        let ind = str.indexOf(colInd[0]);
+        let rowsDom = document.getElementsByTagName("tr");
+        for (var i = 0; i < table.rows.length; i++) {
+            rowsDom[i].deleteCell(ind + 1);
+            if (i > 0) {
+                let colDom = rowsDom[i].getElementsByTagName("td");
+                for (let m = ind + 1; m < colDom.length; m++) {
+                    let indexCol = colDom[m].id;
+                    let alpha = indexCol.split("");
+                    let regex = /[+-]?\d+(?:\.\d+)?/g;
+                    let match = regex.exec(ind);
+                    let new_id = str[m - 1] + (match[0]);
+                    colDom[m].setAttribute("id", new_id);
+                }
+            }
+        }
+        let head = document.getElementsByTagName("th");
+        for (let j = ind + 1; j < head.length; j++) {
+            head[j].innerText = str[j - 1];
+        }
     }
 }
+
 function calculateSum() {
-    if(event.isTrusted) {
+    if (event.isTrusted) {
         let selectedCells = document.getElementsByClassName("highlight");
         let length = selectedCells.length;
         let sum = 0;
@@ -490,7 +955,7 @@ function calculateSum() {
 }
 
 function calculateDifference() {
-    if(event.isTrusted) {
+    if (event.isTrusted) {
         let selectedCells = document.getElementsByClassName("highlight");
         let length = selectedCells.length;
         var diff;
@@ -597,10 +1062,10 @@ function exportTableToCSV() {
 
         for (let i = 0; i < rows.length; i++) {
             var row = [];
-            if(i > 0) {
+            if (i > 0) {
                 var cols = rows[i].querySelectorAll("td");
                 for (let j = 0; j <= cols.length; j++) {
-                    if(j > 0) {
+                    if (j > 0) {
                         cols = rows[i].querySelectorAll("td input");
                         row.push(cols[j - 1].value);
                     } else {
