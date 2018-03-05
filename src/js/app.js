@@ -275,7 +275,11 @@ function findSum(id, x, y) {
 
             var sum = 0;
             for (var i = firstNumber; i <= lastNumber; i++) {
-                sum += parseFloat(cellsarea[i].querySelector('input').value);
+                let val1 = cellsarea[i].querySelector('input').value;
+                if(val1 == ""){
+                    val1 = 0;
+                }
+                sum += parseFloat(val1);
             }
             document.getElementById(id).querySelector('input').value = sum;
         } else if (firstLetter[0] == lastLetter[0]) {
@@ -288,7 +292,11 @@ function findSum(id, x, y) {
             var sum = 0;
             for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
                 if (colNumber > 0) {
-                    sum += parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                    let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
+                    if(val2 == ""){
+                        val2 = 0;
+                    }
+                    sum += parseFloat(val2);
                 }
             }
             document.getElementById(id).querySelector('input').value = sum;
@@ -326,9 +334,17 @@ function findDiff(id, x, y) {
             var diff;
             var value_1 = 0;
             for (var i = firstNumber; i <= lastNumber; i++) {
-                value_1 = parseFloat(cellsarea[firstNumber].querySelector('input').value);
+                let cellsVal1 = cellsarea[firstNumber].querySelector('input').value;
+                if(cellsVal1 == ""){
+                    cellsVal1 = 0;
+                }
+                value_1 = parseFloat(cellsVal1);
+                let val1 = cellsarea[i].querySelector('input').value;
                 if (i > firstNumber) {
-                    diff -= parseFloat(cellsarea[i].querySelector('input').value);
+                    if(val1 == ""){
+                        val1 = 0;
+                    }
+                    diff -= parseFloat(val1);
                     value_1 = diff;
                 }
                 diff = value_1;
@@ -346,9 +362,18 @@ function findDiff(id, x, y) {
             var value_1 = 0;
             for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
                 if (colNumber > 0) {
-                    value_1 = parseFloat(tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value);
+                    let cellsVal2 = tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value;
+                    if(cellsVal2 == ""){
+                        cellsVal2 = 0;
+                    }
+                    value_1 = parseFloat(cellsVal2);
+                    let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
                     if (j > parseInt(rowNumber1)) {
-                        diff -= parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                        if(val2 == ""){
+                            val2 = 0;
+                            
+                        }
+                        diff -= parseFloat(val2);
                         value_1 = diff;
                     }
                     diff = value_1;
@@ -389,9 +414,17 @@ function findMul(id, x, y) {
             var total;
             var value_1 = 0;
             for (var i = firstNumber; i <= lastNumber; i++) {
-                value_1 = parseFloat(cellsarea[firstNumber].querySelector('input').value);
+                let cellsVal1 = cellsarea[firstNumber].querySelector('input').value;
+                if(cellsVal1 ==  ""){
+                    cellsVal1 = 0;
+                }
+                value_1 = parseFloat(cellsVal1);
                 if (i > firstNumber) {
-                    total *= parseFloat(cellsarea[i].querySelector('input').value);
+                    let val1 = cellsarea[i].querySelector('input').value;
+                    if(val1 == ""){
+                        val1 = 0;
+                    }
+                    total *= parseFloat(val1);
                     value_1 = total;
                 }
                 total = value_1;
@@ -408,10 +441,19 @@ function findMul(id, x, y) {
             var total;
             var value_1 = 0;
             for (var j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
+                let cellsVal2 = tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value;
+                if(cellsVal2 == ""){
+                    cellsVal2 = 0;
+                }
                 if (colNumber > 0) {
-                    value_1 = parseFloat(tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value);
+                    value_1 = parseFloat(cellsVal2);
+                    let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
+                    if(val2 == ""){
+                        val2 = 0;
+                    }
                     if (j > parseInt(rowNumber1)) {
-                        total *= parseFloat(tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value);
+                        
+                        total *= parseFloat(val2);
                         value_1 = total;
                     }
                     total = value_1;
@@ -908,7 +950,61 @@ function removeRow() {
 
             }
         }
-
+        var formulacells = document.getElementsByClassName("formula");
+        for (let i = 0; i < formulacells.length; i++) {
+            var dataId = formulacells[i].id;
+            var dataFormula = formulacells[i].dataset.formula;
+            if (dataFormula.toLowerCase().startsWith("=sum")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findSum(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=diff")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findDiff(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=mul")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findMul(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=div")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findDiv(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=mod")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findMod(dataId, array[0], array[1]);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -929,7 +1025,7 @@ function removeCol() {
                     let indexCol = colDom[m].id;
                     let alpha = indexCol.split("");
                     let regex = /[+-]?\d+(?:\.\d+)?/g;
-                    let match = regex.exec(ind);
+                    let match = regex.exec(alpha);
                     let new_id = str[m - 1] + (match[0]);
                     colDom[m].setAttribute("id", new_id);
                 }
@@ -938,6 +1034,61 @@ function removeCol() {
         let head = document.getElementsByTagName("th");
         for (let j = ind + 1; j < head.length; j++) {
             head[j].innerText = str[j - 1];
+        }
+        var formulacells = document.getElementsByClassName("formula");
+        for (let i = 0; i < formulacells.length; i++) {
+            var dataId = formulacells[i].id;
+            var dataFormula = formulacells[i].dataset.formula;
+            if (dataFormula.toLowerCase().startsWith("=sum")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findSum(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=diff")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findDiff(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=mul")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findMul(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=div")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findDiv(dataId, array[0], array[1]);
+                    }
+                }
+            }
+            if (dataFormula.toLowerCase().startsWith("=mod")) {
+                var regExp = /\(([^)]+)\)/;
+                var matches = regExp.exec(dataFormula);
+                if (matches) {
+                    var array = matches[1].toUpperCase().split(',');
+                    if (array.length == 2) {
+                        findMod(dataId, array[0], array[1]);
+                    }
+                }
+            }
         }
     }
 }

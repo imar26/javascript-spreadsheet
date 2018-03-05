@@ -1,6 +1,15 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var ENV = process.env.ENV || 'dev';
+var optimization;
+
+if(ENV == 'dev') {
+    optimization.minimize = false;
+} else if(ENV == 'prod') {
+    optimization.minimize = true;
+}
+
 module.exports = {
     entry: './src/js/app.js',
     output: {
@@ -30,8 +39,6 @@ module.exports = {
             }
         ]
     },
-    optimization: {
-        minimize: false
-    },
+    optimization: optimization,
     watch: true
 };

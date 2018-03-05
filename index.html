@@ -24,16 +24,14 @@
     <div id="mainContent" class="mainContent">
         <div class="container">
             <form method="post">
+                <input type="button" id="addRow" value="Add Row" class="addBtn styleBtn">
+                <input type="button" id="addCol" value="Add Column" class="addBtn styleBtn">
+                <input type="button" id="delRow" value="Delete Row" class="minBtn styleBtn">
+                <input type="button" id="delCol" value="Delete Column" class="minBtn styleBtn">
+                <input type="button" id="exportTableToCSV" value="Export HTML Table To CSV File" class="dwBtn styleBtn">
                 <div id="table">
 
-                </div>
-                <input type="button" id="addRow" value="Add Row">
-                <input type="button" id="addCol" value="Add Column">
-                <input type="button" id="delRow" value="Delete Row">
-                <input type="button" id="delCol" value="Delete Column">
-
-                <br>
-                <br>
+                </div>               
 
                 <input type="button" id="calSum" value="Calculate Sum">
                 <input type="button" id="calDiff" value="Calculate Difference">
@@ -41,8 +39,6 @@
                 <input type="button" id="calDiv" value="Calculate Division">
                 <input type="button" id="calMod" value="Calculate Modulus">
                 <p id="result"></p>
-
-                <input type="button" id="exportTableToCSV" value="Export HTML Table To CSV File">
             </form>
         </div>
     </div>
