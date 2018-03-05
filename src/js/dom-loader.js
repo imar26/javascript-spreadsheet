@@ -1,3 +1,4 @@
+// Variables declared for the buttons on the index page
 export var addRow = document.getElementById('addRow');
 export var addCol = document.getElementById("addCol");
 export var delRow = document.getElementById("delRow");

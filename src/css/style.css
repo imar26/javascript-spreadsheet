@@ -140,16 +140,45 @@ input.dwBtn:hover {
     background-image: url(/images/download-hover.svg);
 }
 
+input.mulBtn {
+    background-image: url(/images/multiply.svg);
+}
+
+input.mulBtn:hover {
+    background-image: url(/images/multiply-hover.svg);
+}
+
+input.divBtn {
+    background-image: url(/images/divide.svg);
+}
+
+input.divBtn:hover {
+    background-image: url(/images/divide-hover.svg);
+}
+
+input.perBtn {
+    background-image: url(/images/percent.svg);
+}
+
+input.perBtn:hover {
+    background-image: url(/images/percent-hover.svg);
+}
+
 .highlight {
     border: 1px solid;
 }
 
-.highlight input {
-    background-color: #FC335C;
-    color: #fff;
+.selected input {
+    background-color: #AFFFDF;
+    color: #FC335C;
 }
 
 .formula input {
     background-color: #000;
+    color: #fff;
+}
+
+.highlight input {
+    background-color: #FC335C;
     color: #fff;
 }

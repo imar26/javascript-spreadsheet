@@ -7,7 +7,7 @@ Integrated several features such as
 - Add column
 - Delete column
 - Perform various arithmetic operations such as Addition, Subtraction, Multiplication, Division and Modulus on selected multiple rows or columns and display their output in the selected cell
-- Updating the value of the cell with also update the output of the calculated arithmetic operation
+- Updating the value of the cell will also update the output of the calculated arithmetic operation
 - Export all the cell entries in a CSV
 
 ## Instructions To Run The Project
@@ -43,10 +43,10 @@ Click on the **Add Row** Button. New row will be added as the last row.
 Click on the **Add Column** Button. New column will be added as the last column.
 
 ### Delete Row
-Click on any cell of the row that you want to delete. Then click on **Delete Row** Button. The row will be deleted, and all the rows below that particular row will be updated with new row numbers.
+Double click on any cell of the row that you want to delete. Then click on **Delete Row** Button. The row will be deleted, and all the rows below that particular row will be updated with new row numbers.
 
 ### Delete Column
-Click on any cell of the column that you want to delete. Then click on **Delete Column** Button. The column will be deleted, and all the columns after that particular column will be updated with new column names.
+Double click on any cell of the column that you want to delete. Then click on **Delete Column** Button. The column will be deleted, and all the columns after that particular column will be updated with new column names.
 
 ### Perform Arithmetic Operations (+,-,*,/,%)
 Randomly add numbers to any number of cells in the row and columns. Not necessary to fill in values in the all the cells. For example, you can put in values in few cells of one particular row and few cells of one particular column.
@@ -70,7 +70,7 @@ Now, select a cell where you want to display the output of any arithmetic operat
 ### Export Entries To CSV File
 Click on the **Export HTML Table To CSV File** Button
 
-## Technologies Used
+## In this project, Technologies Used
 
 - HTML5
 - CSS3
@@ -78,7 +78,3 @@ Click on the **Export HTML Table To CSV File** Button
 - Node.js
 - ECMAScript 6
 - Webpack
-
-## Application Deployment
-
-You can also find the application deployed on: [TO BE UPDATED]()
