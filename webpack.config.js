@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 var ENV = process.env.ENV || 'dev';
-var optimization;
+var optimization = {};
 
 if(ENV == 'dev') {
     optimization.minimize = false;
