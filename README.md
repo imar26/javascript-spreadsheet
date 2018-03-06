@@ -18,7 +18,7 @@ Clone the repository on your local machine using command
 git clone https://github.com/neu-mis-info6150-spring-2018/extra-credit-assignment-1-techcrat.git
 ```
 
-Go inside the folder and run some commands to install the dependencies
+Go inside the folder and run the commands to install the dependencies
 
 ```sh
 cd extra-credit-assignment-1-techcrat
@@ -54,14 +54,14 @@ For example, after you select a cell, you can perform an operation on either a r
 Now, select a cell where you want to display the output of any arithmetic operation. Type the formulas as shown below:
 
 > To Calculate for Rows (Type the command in bold in the cell you selected)
-- ADDITION Operation: **=sum(A3,E3)** Here, A3,E3 is the range and the values of all the cells that fall in this range will be calculated.
+- ADDITION Operation: **=sum(A3,E3)** Here, (A3,E3) is the range and the values of all the cells that fall in this range will be calculated.
 - SUBTRACTION Operation: **=diff(A3,E3)**
 - MULTIPLICATION Operation: **=mul(A3,E3)**
 - DIVISION Operation: **=div(A3,E3)**
 - MODULUS Operation: **=mod(A3,E3)**
 
 > To Calculate for Columns (Type the command in bold in the cell you selected)
-- ADDITION Operation: **=sum(A3,A9)** Here, A3,A9 is the range and the values of all the cells that fall in this range will be calculated.
+- ADDITION Operation: **=sum(A3,A9)** Here, (A3,A9) is the range and the values of all the cells that fall in this range will be calculated.
 - SUBTRACTION Operation: **=diff(A3,A9)**
 - MULTIPLICATION Operation: **=mul(A3,A9)**
 - DIVISION Operation: **=div(A3,A9)**
@@ -69,6 +69,11 @@ Now, select a cell where you want to display the output of any arithmetic operat
 
 ### Export Entries To CSV File
 Click on the **Export HTML Table To CSV File** Button
+
+### ES6 Features Used
+- Import / Export
+- Arrow Functions
+- Let Keyword
 
 ## In this project, Technologies Used
 

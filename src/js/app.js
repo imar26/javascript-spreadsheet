@@ -299,7 +299,7 @@ var findSum = (id, x, y) => {
             let sum = 0;
             for (let i = firstNumber; i <= lastNumber; i++) {
                 let val1 = cellsarea[i].querySelector('input').value;
-                if (val1 == "" || !val1.match(/^[0-9]+$/)) {
+                if (val1 == "" || !val1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                     val1 = 0;
                 }
                 sum += parseFloat(val1);
@@ -316,7 +316,7 @@ var findSum = (id, x, y) => {
             for (let j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
                 if (colNumber > 0) {
                     let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
-                    if (val2 == "" || !val2.match(/^[0-9]+$/)) {
+                    if (val2 == "" || !val2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         val2 = 0;
                     }
                     sum += parseFloat(val2);
@@ -358,13 +358,13 @@ var findDiff = (id, x, y) => {
             let value_1 = 0;
             for (let i = firstNumber; i <= lastNumber; i++) {
                 let cellsVal1 = cellsarea[firstNumber].querySelector('input').value;
-                if (cellsVal1 == "" || !cellsVal1.match(/^[0-9]+$/)) {
+                if (cellsVal1 == "" || !cellsVal1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                     cellsVal1 = 0;
                 }
                 value_1 = parseFloat(cellsVal1);
                 let val1 = cellsarea[i].querySelector('input').value;
                 if (i > firstNumber) {
-                    if (val1 == "" || !val1.match(/^[0-9]+$/)) {
+                    if (val1 == "" || !val1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         val1 = 0;
                     }
                     diff -= parseFloat(val1);
@@ -386,13 +386,13 @@ var findDiff = (id, x, y) => {
             for (let j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
                 if (colNumber > 0) {
                     let cellsVal2 = tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value;
-                    if (cellsVal2 == "" || !cellsVal2.match(/^[0-9]+$/)) {
+                    if (cellsVal2 == "" || !cellsVal2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         cellsVal2 = 0;
                     }
                     value_1 = parseFloat(cellsVal2);
                     let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
                     if (j > parseInt(rowNumber1)) {
-                        if (val2 == "" || !val2.match(/^[0-9]+$/)) {
+                        if (val2 == "" || !val2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                             val2 = 0;
 
                         }
@@ -438,13 +438,13 @@ var findMul = (id, x, y) => {
             let value_1 = 0;
             for (let i = firstNumber; i <= lastNumber; i++) {
                 let cellsVal1 = cellsarea[firstNumber].querySelector('input').value;
-                if (cellsVal1 == "" || !cellsVal1.match(/^[0-9]+$/)) {
+                if (cellsVal1 == "" || !cellsVal1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                     cellsVal1 = 0;
                 }
                 value_1 = parseFloat(cellsVal1);
                 if (i > firstNumber) {
                     let val1 = cellsarea[i].querySelector('input').value;
-                    if (val1 == "" || !val1.match(/^[0-9]+$/)) {
+                    if (val1 == "" || !val1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         val1 = 0;
                     }
                     total *= parseFloat(val1);
@@ -465,13 +465,13 @@ var findMul = (id, x, y) => {
             let value_1 = 0;
             for (let j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
                 let cellsVal2 = tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value;
-                if (cellsVal2 == "" || !cellsVal2.match(/^[0-9]+$/)) {
+                if (cellsVal2 == "" || !cellsVal2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                     cellsVal2 = 0;
                 }
                 if (colNumber > 0) {
                     value_1 = parseFloat(cellsVal2);
                     let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
-                    if (val2 == "" || !val2.match(/^[0-9]+$/)) {
+                    if (val2 == "" || !val2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         val2 = 0;
                     }
                     if (j > parseInt(rowNumber1)) {
@@ -519,13 +519,13 @@ var findDiv = (id, x, y) => {
 
             for (let i = firstNumber; i <= lastNumber; i++) {
                 let cellsVal1 = cellsarea[firstNumber].querySelector('input').value;
-                if (cellsVal1 == "" || !cellsVal1.match(/^[0-9]+$/)) {
+                if (cellsVal1 == "" || !cellsVal1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                     cellsVal1 = 0;
                 }
                 value_1 = parseFloat(cellsVal1);
                 if (i > firstNumber) {
                     let val1 = cellsarea[i].querySelector('input').value;
-                    if (val1 == "" || !val1.match(/^[0-9]+$/)) {
+                    if (val1 == "" || !val1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         val1 = 0;
                     }
                     total /= parseFloat(val1);
@@ -550,13 +550,13 @@ var findDiv = (id, x, y) => {
             for (let j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
                 if (colNumber > 0) {
                     let cellsVal2 = tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value;
-                    if (cellsVal2 == "" || !cellsVal2.match(/^[0-9]+$/)) {
+                    if (cellsVal2 == "" || !cellsVal2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         cellsVal2 = 0;
                     }
                     value_1 = parseFloat(cellsVal2);
                     if (j > parseInt(rowNumber1)) {
                         let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
-                        if (val2 == "" || !val2.match(/^[0-9]+$/)) {
+                        if (val2 == "" || !val2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                             val2 = 0;
                         }
                         total /= parseFloat(val2);
@@ -604,13 +604,13 @@ var findMod = (id, x, y) => {
             let value_1 = 0;
             for (let i = firstNumber; i <= lastNumber; i++) {
                 let cellsVal1 = cellsarea[firstNumber].querySelector('input').value;
-                if (cellsVal1 == "" || !cellsVal1.match(/^[0-9]+$/)) {
+                if (cellsVal1 == "" || !cellsVal1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                     cellsVal1 = 0;
                 }
                 value_1 = parseFloat(cellsVal1);
                 if (i > firstNumber) {
                     let val1 = cellsarea[i].querySelector('input').value;
-                    if (val1 == "" || !val1.match(/^[0-9]+$/)) {
+                    if (val1 == "" || !val1.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         val1 = 0;
                     }
                     total %= parseFloat(val1);
@@ -635,13 +635,13 @@ var findMod = (id, x, y) => {
             for (let j = parseInt(rowNumber1); j <= parseInt(rowNumber2); j++) {
                 if (colNumber > 0) {
                     let cellsVal2 = tablearea.rows[parseInt(rowNumber1)].querySelectorAll('td')[colNumber].querySelector('input').value;
-                    if (cellsVal2 == "" || !cellsVal2.match(/^[0-9]+$/)) {
+                    if (cellsVal2 == "" || !cellsVal2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                         cellsVal2 = 0;
                     }
                     value_1 = parseFloat(cellsVal2);
                     if (j > parseInt(rowNumber1)) {
                         let val2 = tablearea.rows[j].querySelectorAll('td')[colNumber].querySelector('input').value;
-                        if (val2 == "" || !val2.match(/^[0-9]+$/)) {
+                        if (val2 == "" || !val2.match(/^[-+]?[0-9]*\.?[0-9]+$/)) {
                             val2 = 0;
                         }
                         total %= parseFloat(val2);
