@@ -18,9 +18,9 @@ var isMouseDown, isHighlighted;
 var defrows = 8,
     defcolumns = 5;
 // Function to be called on page load 
-var init = () => {
+var init = (event) => {
 
-    loadTable();
+    loadTable(event);
     // Calculate height
     let windowHeight = window.innerHeight;
     let headerHeight = document.getElementById('header').clientHeight;
@@ -30,15 +30,16 @@ var init = () => {
     document.getElementById("mainContent").setAttribute('style', 'min-height: ' + totalHeight + 'px');
 }
 
-window.onload = function () {
-    init();
+window.onload = function (event) {
+    init(event);
 };
 // Loads the Default Table on Page Load
-var loadTable = () => {
+var loadTable = (event) => {
     let tablearea = document.getElementById('table');
     let table = document.createElement('table');
     // Assign id to table
     table.setAttribute("id", "tableId");
+    let tbody = document.createElement('tbody');
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     // Load for rows
     for (let i = 0; i <= defrows; i++) {
@@ -70,7 +71,7 @@ var loadTable = () => {
                 //     }
                 // });
                 
-                eventHandlersTd(td);
+                eventHandlersTd(td, event);
                 if (j > 0) {
                     // Makes all the cells except the first cell as an input
                     let x = document.createElement("INPUT");
@@ -100,7 +101,8 @@ var loadTable = () => {
                 tr.appendChild(th);
             }
         }
-        table.appendChild(tr);
+        tbody.appendChild(tr);
+        table.appendChild(tbody);
     }
     tablearea.appendChild(table);
 }
@@ -125,9 +127,9 @@ function myMouseUpHandler() {
     isMouseDown = false;
 }
 
-var eventHandlersTd = (td) => {
+var eventHandlersTd = (td, event) => {
     //Double Click to select Cells to Delete
-    td.addEventListener('dblclick', function () {
+    td.addEventListener('dblclick', function (event) {
         if (event.isTrusted) {
             // td.classList.remove("selected");
             td.classList.toggle("highlight");
@@ -137,10 +139,10 @@ var eventHandlersTd = (td) => {
         }
     });
     //On Change of Event To Check for Arithmatic Operations
-    td.addEventListener('change', function () {
+    td.addEventListener('change', function (event) {
         if (event.isTrusted) {
             // For Addition
-            if (td.querySelector('input').value.toLowerCase().startsWith("=sum")) {
+            if (td.querySelector('input').value.toLowerCase().indexOf("=sum")==0) {
                 // Sets the formula as Data Attribute
                 td.dataset.formula = td.querySelector('input').value;
                 td.classList.remove("selected");
@@ -157,7 +159,7 @@ var eventHandlersTd = (td) => {
                 }
             }
             // For Difference
-            if (td.querySelector('input').value.toLowerCase().startsWith("=diff")) {
+            if (td.querySelector('input').value.toLowerCase().indexOf("=diff")==0) {
                 // Sets the formula as Data Attribute
                 td.dataset.formula = td.querySelector('input').value;
                 td.classList.remove("selected");
@@ -174,7 +176,7 @@ var eventHandlersTd = (td) => {
                 }
             }
             // For Multiplication
-            if (td.querySelector('input').value.toLowerCase().startsWith("=mul")) {
+            if (td.querySelector('input').value.toLowerCase().indexOf("=mul")==0) {
                 // Sets the formula as Data Attribute
                 td.dataset.formula = td.querySelector('input').value;
                 td.classList.remove("selected");
@@ -191,7 +193,7 @@ var eventHandlersTd = (td) => {
                 }
             }
             // For Division
-            if (td.querySelector('input').value.toLowerCase().startsWith("=div")) {
+            if (td.querySelector('input').value.toLowerCase().indexOf("=div")==0) {
                 // Sets the formula as Data Attribute
                 td.dataset.formula = td.querySelector('input').value;
                 td.classList.remove("selected");
@@ -208,7 +210,7 @@ var eventHandlersTd = (td) => {
                 }
             }
             // For Modulus
-            if (td.querySelector('input').value.toLowerCase().startsWith("=mod")) {
+            if (td.querySelector('input').value.toLowerCase().indexOf("=mod")==0) {
                 // Sets the formula as Data Attribute
                 td.dataset.formula = td.querySelector('input').value;
                 td.classList.remove("selected");
@@ -238,7 +240,7 @@ var updateOperation = () => {
         // Gets the data attribute
         let dataFormula = formulacells[i].dataset.formula;
         // For Addition
-        if (dataFormula.toLowerCase().startsWith("=sum")) {
+        if (dataFormula.toLowerCase().indexOf("=sum")==0) {
             let regExp = /\(([^)]+)\)/;
             let matches = regExp.exec(dataFormula);
             if (matches) {
@@ -250,7 +252,7 @@ var updateOperation = () => {
             }
         }
         // For Difference
-        if (dataFormula.toLowerCase().startsWith("=diff")) {
+        if (dataFormula.toLowerCase().indexOf("=diff")==0) {
             let regExp = /\(([^)]+)\)/;
             let matches = regExp.exec(dataFormula);
             if (matches) {
@@ -262,7 +264,7 @@ var updateOperation = () => {
             }
         }
         // For Multiplication
-        if (dataFormula.toLowerCase().startsWith("=mul")) {
+        if (dataFormula.toLowerCase().indexOf("=mul")==0) {
             let regExp = /\(([^)]+)\)/;
             let matches = regExp.exec(dataFormula);
             if (matches) {
@@ -274,7 +276,7 @@ var updateOperation = () => {
             }
         }
         // For Division
-        if (dataFormula.toLowerCase().startsWith("=div")) {
+        if (dataFormula.toLowerCase().indexOf("=div")==0) {
             let regExp = /\(([^)]+)\)/;
             let matches = regExp.exec(dataFormula);
             if (matches) {
@@ -286,7 +288,7 @@ var updateOperation = () => {
             }
         }
         // For Modulus
-        if (dataFormula.toLowerCase().startsWith("=mod")) {
+        if (dataFormula.toLowerCase().indexOf("=mod")==0) {
             let regExp = /\(([^)]+)\)/;
             let matches = regExp.exec(dataFormula);
             if (matches) {
@@ -763,7 +765,7 @@ var findMod = (id, x, y) => {
     }
 }
 //Function to Insert a Column
-function insertColumn() {
+function insertColumn(event) {
     if (event.isTrusted) {
         let tablearea = document.getElementById('table');
         let tr = document.getElementsByTagName('tr');
@@ -812,7 +814,7 @@ function insertColumn() {
     }
 }
 //Function to Insert Row
-function insertRow() {
+function insertRow(event) {
     if (event.isTrusted) {
         let table = document.getElementById('tableId');
         let rowCount = table.rows.length;
@@ -864,7 +866,7 @@ function createCell(cell, count, rowCount) {
     eventHandlersTd(cell);
 }
 //Deletes the Row and Updates the Table with Headers and Cells Ids
-function removeRow() {
+function removeRow(event) {
     if (event.isTrusted) {
         let table = document.getElementById('tableId');
         let selectedCells = document.getElementsByClassName("highlight");
@@ -916,7 +918,7 @@ function removeRow() {
     }
 }
 //Deletes the Columns and Updates the Headers and Cell Ids
-function removeCol() {
+function removeCol(event) {
     if (event.isTrusted) {
         let table = document.getElementById('tableId');
         let selectedCells = document.getElementsByClassName("highlight");
@@ -963,7 +965,7 @@ function removeCol() {
     }
 }
 //Additional Sum Function Implemented
-function calculateSum() {
+function calculateSum(event) {
     if (event.isTrusted) {
         let selectedCells = document.getElementsByClassName("selected");
         let length = selectedCells.length;
@@ -975,7 +977,7 @@ function calculateSum() {
     }
 }
 //Additional Difference Function Implemented
-function calculateDifference() {
+function calculateDifference(event) {
     if (event.isTrusted) {
         let selectedCells = document.getElementsByClassName("selected");
         let length = selectedCells.length;
@@ -993,7 +995,7 @@ function calculateDifference() {
     }
 }
 //Additional Multiplication Function Implemented
-function calculateMultiplication() {
+function calculateMultiplication(event) {
     if (event.isTrusted) {
         let selectedCells = document.getElementsByClassName("selected");
         let length = selectedCells.length;
@@ -1011,7 +1013,7 @@ function calculateMultiplication() {
     }
 }
 //Additional Division Function Implemented
-function calculateDivision() {
+function calculateDivision(event) {
     if (event.isTrusted) {
         let selectedCells = document.getElementsByClassName("selected");
         let length = selectedCells.length;
@@ -1029,7 +1031,7 @@ function calculateDivision() {
     }
 }
 //Additional Modulus Function Implemented
-function calculateModulus() {
+function calculateModulus(event) {
     if (event.isTrusted) {
         let selectedCells = document.getElementsByClassName("selected");
         let length = selectedCells.length;
@@ -1055,27 +1057,31 @@ function downloadCSV(csv, filename) {
     csvFile = new Blob([csv], {
         type: "text/csv"
     });
+    if (navigator.msSaveBlob) {    
+        navigator.msSaveBlob(csvFile, filename);
+    } else {
 
-    // Download link
-    downloadLink = document.createElement("a");
+        // Download link
+        downloadLink = document.createElement("a");
 
-    // File name
-    downloadLink.download = filename;
+        // File name
+        downloadLink.download = filename;
 
-    // Create a link to the file
-    downloadLink.href = window.URL.createObjectURL(csvFile);
+        // Create a link to the file
+        downloadLink.href = window.URL.createObjectURL(csvFile);
 
-    // Hide download link
-    downloadLink.style.display = "none";
+        // Hide download link
+        downloadLink.style.display = "none";
 
-    // Add the link to DOM
-    document.body.appendChild(downloadLink);
+        // Add the link to DOM
+        document.body.appendChild(downloadLink);
 
-    // Click download link
-    downloadLink.click();
+        // Click download link
+        downloadLink.click();
+    }
 }
 //Export CSV Main Function
-function exportTableToCSV() {
+function exportTableToCSV(event) {
     if (event.isTrusted) {
         let filename = 'spreadsheet.csv';
         let csv = [];
