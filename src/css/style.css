@@ -117,51 +117,51 @@ input.styleBtn {
 }
 
 input.addBtn {
-    background-image: url(/images/plus.svg);
+    background-image: url(../images/plus.svg);
 }
 
 input.addBtn:hover {
-    background-image: url(/images/plus-hover.svg);
+    background-image: url(../images/plus-hover.svg);
 }
 
 input.minBtn {
-    background-image: url(/images/minus.svg);
+    background-image: url(../images/minus.svg);
 }
 
 input.minBtn:hover {
-    background-image: url(/images/minus-hover.svg);
+    background-image: url(../images/minus-hover.svg);
 }
 
 input.dwBtn {
-    background-image: url(/images/download.svg);
+    background-image: url(../images/download.svg);
 }
 
 input.dwBtn:hover {
-    background-image: url(/images/download-hover.svg);
+    background-image: url(../images/download-hover.svg);
 }
 
 input.mulBtn {
-    background-image: url(/images/multiply.svg);
+    background-image: url(../images/multiply.svg);
 }
 
 input.mulBtn:hover {
-    background-image: url(/images/multiply-hover.svg);
+    background-image: url(../images/multiply-hover.svg);
 }
 
 input.divBtn {
-    background-image: url(/images/divide.svg);
+    background-image: url(../images/divide.svg);
 }
 
 input.divBtn:hover {
-    background-image: url(/images/divide-hover.svg);
+    background-image: url(../images/divide-hover.svg);
 }
 
 input.perBtn {
-    background-image: url(/images/percent.svg);
+    background-image: url(../images/percent.svg);
 }
 
 input.perBtn:hover {
-    background-image: url(/images/percent-hover.svg);
+    background-image: url(../images/percent-hover.svg);
 }
 
 .highlight {
