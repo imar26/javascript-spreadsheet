@@ -112,11 +112,11 @@ input.styleBtn {
     background-position: 8px 6px;
     border: none;
     cursor: pointer;
-    padding-left: 50px;
+    /* padding-left: 50px; */
     vertical-align: middle;
 }
 
-input.addBtn {
+/* input.addBtn {
     background-image: url(../images/plus.svg);
 }
 
@@ -138,9 +138,9 @@ input.dwBtn {
 
 input.dwBtn:hover {
     background-image: url(../images/download-hover.svg);
-}
+} */
 
-input.mulBtn {
+/* input.mulBtn {
     background-image: url(../images/multiply.svg);
 }
 
@@ -162,7 +162,7 @@ input.perBtn {
 
 input.perBtn:hover {
     background-image: url(../images/percent-hover.svg);
-}
+} */
 
 .highlight {
     border: 1px solid;

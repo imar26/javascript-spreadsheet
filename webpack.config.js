@@ -61,9 +61,6 @@ module.exports = {
             }
         ]
     },
-    optimization: {
-        minimize: false
-    },
     watch: true,
     plugins: [
         new HtmlWebpackPlugin({
